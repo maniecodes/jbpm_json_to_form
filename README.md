@@ -1,6 +1,6 @@
 # jbpm_json_to_form
 
-A new Flutter project.
+A plugin for converting json to form. This plugin will take the generated json in jbpm as input and render it as a form in flutter. This plugin is inspired by https://github.com/VictorRancesCode
 
 ## Getting Started
 
