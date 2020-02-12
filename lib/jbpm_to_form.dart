@@ -10,6 +10,7 @@ class JbpmForm extends StatefulWidget {
   final double padding;
   final Map errorMessages;
   final Widget buttonSave;
+  final Function actionSave;
   final ValueChanged<dynamic> onChanged;
 
   const JbpmForm({
@@ -19,6 +20,7 @@ class JbpmForm extends StatefulWidget {
     this.padding,
     this.errorMessages = const {},
     this.buttonSave,
+    this.actionSave,
   });
 
   @override
@@ -73,7 +75,11 @@ class _JbpmFormState extends State<JbpmForm> {
                   ),
                 ),
                 TextFormField(
-                  onSaved: null,
+                  onSaved: (val) {
+                    var d = '';
+                    setState(() => d = val);
+                    print(d);
+                  },
                   controller: null,
                   keyboardType: item['code'] == 'IntergerBox'
                       ? TextInputType.number
@@ -81,6 +87,10 @@ class _JbpmFormState extends State<JbpmForm> {
                   initialValue: formGeneral['fields'][i]['value'] ?? null,
                   maxLength: item['maxLength'] ?? null,
                   maxLines: item['code'] == 'TextArea' ? 10 : 1,
+                  onChanged: (String value) {
+                    formGeneral['fields'][i]['value'] = value;
+                    _handleChanged();
+                  },
                   readOnly: item['readOnly'] ?? false,
                   obscureText: item['code'] == 'Password' ? true : false,
                   validator: (value) {
@@ -104,10 +114,30 @@ class _JbpmFormState extends State<JbpmForm> {
         );
       }
     }
+
+    if (widget.buttonSave != null) {
+      listWidget.add(
+        Container(
+          margin: EdgeInsets.only(top: 10.0),
+          child: InkWell(
+            onTap: () {
+              if (_formKey.currentState.validate()) {
+                widget.actionSave(formGeneral);
+              }
+            },
+            child: widget.buttonSave,
+          ),
+        ),
+      );
+    }
     return listWidget;
   }
 
   _JbpmFormState(this.formGeneral);
+
+  void _handleChanged() {
+    widget.onChanged(formGeneral);
+  }
 
   final _formKey = GlobalKey<FormState>();
 

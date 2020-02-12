@@ -46,6 +46,7 @@ class _FieldsState extends State<Fields> {
     ]
   });
   dynamic response;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,11 +68,14 @@ class _FieldsState extends State<Fields> {
               onChanged: (dynamic response) {
                 this.response = response;
               },
+              actionSave: (data) {
+                print(data);
+              },
               buttonSave: new Container(
                 height: 40.0,
                 color: Colors.blueAccent,
                 child: Center(
-                  child: Text("Register",
+                  child: Text("Submit",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
