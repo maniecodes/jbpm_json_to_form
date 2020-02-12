@@ -65,6 +65,13 @@ class _JbpmFormState extends State<JbpmForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(
+                  child: Text(
+                    item['label'],
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                  ),
+                ),
                 TextFormField(
                   onSaved: null,
                   controller: null,
