@@ -53,6 +53,17 @@ class _JbpmFormState extends State<JbpmForm> {
     return 'Email is not valid';
   }
 
+  bool labelHidden(item) {
+    if (item.containsKey('hiddenLabel')) {
+      if (item['hiddenLabel'] is bool) {
+        return !item['hiddenLabel'];
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
   List<Widget> jbpmToForm() {
     List<Widget> listWidget = List<Widget>();
     for (var i = 0; i < formGeneral['fields'].length; i++) {
@@ -109,6 +120,46 @@ class _JbpmFormState extends State<JbpmForm> {
                   },
                 ),
               ],
+            ),
+          ),
+        );
+      }
+
+      if (item['cide'] == 'CheckBox') {
+        if (item['value'] == null) {
+          formGeneral['fields'][i]['value'] = false;
+        }
+        List<Widget> checkboxes = [];
+        if (labelHidden(item)) {
+          checkboxes.add(Text(item['label'],
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)));
+        }
+
+        checkboxes.add(
+          Row(
+            children: <Widget>[
+              Expanded(child: Text(formGeneral['fields'][i]['label'])),
+              Checkbox(
+                value: formGeneral['fields'][i]['value'],
+                onChanged: (bool value) {
+                  this.setState(
+                    () {
+                      formGeneral['fields'][i]['value'] = value;
+                      _handleChanged();
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+
+        listWidget.add(
+          new Container(
+            margin: new EdgeInsets.only(top: 5.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: checkboxes,
             ),
           ),
         );
