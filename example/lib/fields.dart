@@ -42,6 +42,19 @@ class _FieldsState extends State<Fields> {
         "code": "TextArea",
         "serializedFieldClassName":
             "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.definition.TextAreaFieldDefinition"
+      },
+      {
+        "id": "field_831172453834416E10",
+        "name": "caseFile_ordered",
+        "label": "CaseFile_ordered",
+        "required": false,
+        "readOnly": false,
+        "validateOnChange": true,
+        "binding": "caseFile_ordered",
+        "standaloneClassName": "java.lang.Boolean",
+        "code": "CheckBox",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.checkBox.definition.CheckBoxFieldDefinition"
       }
     ]
   });
