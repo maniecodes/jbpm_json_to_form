@@ -2,7 +2,9 @@ library jbpm_json_to_form;
 
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class JbpmForm extends StatefulWidget {
   final String form;
@@ -28,6 +30,15 @@ class JbpmForm extends StatefulWidget {
 }
 
 class _JbpmFormState extends State<JbpmForm> {
+  String _fileName;
+  String _path;
+  Map<String, String> _paths;
+  String _extension;
+  bool _loadingPath = false;
+  bool _multiPick = true;
+  bool _hasValidMime = false;
+  FileType _pickingType;
+
   final dynamic formGeneral;
 
   String isRequired(item, value) {
@@ -62,6 +73,26 @@ class _JbpmFormState extends State<JbpmForm> {
       return true;
     }
     return false;
+  }
+
+  void _openFileExplorer() async {
+    //  if (_pickingType == FileType.ANY || _hasValidMime) {
+    setState(() => _loadingPath = true);
+    try {
+      _path = null;
+      _paths = await FilePicker.getMultiFilePath(
+          type: _pickingType, fileExtension: _extension);
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+    if (!mounted) return;
+    setState(() {
+      _loadingPath = false;
+      _fileName = _path != null
+          ? _path.split('/').last
+          : _paths != null ? _paths.keys.toString() : '...';
+    });
+    //  }
   }
 
   List<Widget> jbpmToForm() {
@@ -163,6 +194,21 @@ class _JbpmFormState extends State<JbpmForm> {
             ),
           ),
         );
+      }
+
+      if (item['code'] == 'Document') {
+        listWidget.add(Container(
+          margin: EdgeInsets.only(top: 5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () => _openFileExplorer(),
+                child: Text('Open file'),
+              ),
+            ],
+          ),
+        ));
       }
     }
 

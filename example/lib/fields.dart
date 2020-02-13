@@ -55,6 +55,19 @@ class _FieldsState extends State<Fields> {
         "code": "CheckBox",
         "serializedFieldClassName":
             "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.checkBox.definition.CheckBoxFieldDefinition"
+      },
+      {
+        "id": "field_2897352400479343E12",
+        "name": "caseFile_hwSpec",
+        "label": "CaseFile_hwSpec",
+        "required": false,
+        "readOnly": false,
+        "validateOnChange": true,
+        "binding": "caseFile_hwSpec",
+        "standaloneClassName": "org.jbpm.document.Document",
+        "code": "Document",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.jbpm.model.authoring.document.definition.DocumentFieldDefinition"
       }
     ]
   });
