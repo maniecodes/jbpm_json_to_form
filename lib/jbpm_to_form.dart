@@ -125,7 +125,7 @@ class _JbpmFormState extends State<JbpmForm> {
         );
       }
 
-      if (item['cide'] == 'CheckBox') {
+      if (item['code'] == 'CheckBox') {
         if (item['value'] == null) {
           formGeneral['fields'][i]['value'] = false;
         }
