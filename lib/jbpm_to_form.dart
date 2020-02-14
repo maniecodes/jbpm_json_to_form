@@ -12,6 +12,7 @@ class JbpmForm extends StatefulWidget {
   final double padding;
   final Map errorMessages;
   final Widget buttonSave;
+  final Map decorations;
   final Function actionSave;
   final ValueChanged<dynamic> onChanged;
 
@@ -21,6 +22,7 @@ class JbpmForm extends StatefulWidget {
     this.formMap,
     this.padding,
     this.errorMessages = const {},
+    this.decorations = const {},
     this.buttonSave,
     this.actionSave,
   });
@@ -107,6 +109,12 @@ class _JbpmFormState extends State<JbpmForm> {
                       ? TextInputType.number
                       : TextInputType.text,
                   initialValue: formGeneral['fields'][i]['value'] ?? null,
+                  decoration: item['decoration'] ??
+                      widget.decorations[item['code']] ??
+                      InputDecoration(
+                        hintText: item['placeholder'] ?? "",
+                        helperText: item['helpText'] ?? "",
+                      ),
                   maxLength: item['maxLength'] ?? null,
                   maxLines: item['code'] == 'TextArea' ? 10 : 1,
                   onChanged: (String value) {
