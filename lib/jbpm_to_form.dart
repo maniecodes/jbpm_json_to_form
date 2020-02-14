@@ -75,26 +75,6 @@ class _JbpmFormState extends State<JbpmForm> {
     return false;
   }
 
-  void _openFileExplorer() async {
-    //  if (_pickingType == FileType.ANY || _hasValidMime) {
-    setState(() => _loadingPath = true);
-    try {
-      _path = null;
-      _paths = await FilePicker.getMultiFilePath(
-          type: _pickingType, fileExtension: _extension);
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
-    }
-    if (!mounted) return;
-    setState(() {
-      _loadingPath = false;
-      _fileName = _path != null
-          ? _path.split('/').last
-          : _paths != null ? _paths.keys.toString() : '...';
-    });
-    //  }
-  }
-
   List<Widget> jbpmToForm() {
     List<Widget> listWidget = List<Widget>();
     for (var i = 0; i < formGeneral['fields'].length; i++) {
