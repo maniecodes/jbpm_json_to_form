@@ -84,7 +84,7 @@ class _JbpmFormState extends State<JbpmForm> {
 
       if (item['code'] == 'TextBox' ||
           item['code'] == 'TextArea' ||
-          item['code'] == 'IntergerBox') {
+          item['code'] == 'IntegerBox') {
         listWidget.add(
           Container(
             margin: EdgeInsets.only(top: 5.0),
@@ -105,7 +105,7 @@ class _JbpmFormState extends State<JbpmForm> {
                     print(d);
                   },
                   controller: null,
-                  keyboardType: item['code'] == 'IntergerBox'
+                  keyboardType: item['code'] == 'IntegerBox'
                       ? TextInputType.number
                       : TextInputType.text,
                   initialValue: formGeneral['fields'][i]['value'] ?? null,
