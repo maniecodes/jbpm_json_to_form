@@ -68,6 +68,50 @@ class _FieldsState extends State<Fields> {
         "code": "Document",
         "serializedFieldClassName":
             "org.kie.workbench.common.forms.jbpm.model.authoring.document.definition.DocumentFieldDefinition"
+      },
+      {
+        "placeHolder": "Reason",
+        "rows": 4,
+        "id": "field_332058348325587E12",
+        "name": "reason",
+        "label": "Reason",
+        "required": false,
+        "readOnly": true,
+        "validateOnChange": true,
+        "binding": "reason",
+        "standaloneClassName": "java.lang.String",
+        "code": "TextArea",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.definition.TextAreaFieldDefinition"
+      },
+      {
+        "placeHolder": "Performance",
+        "maxLength": 100,
+        "id": "field_336003622256354E12",
+        "name": "performance",
+        "label": "Performance",
+        "required": true,
+        "readOnly": false,
+        "validateOnChange": true,
+        "binding": "performance",
+        "standaloneClassName": "java.lang.Integer",
+        "code": "IntegerBox",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.integerBox.definition.IntegerBoxFieldDefinition"
+      },
+      {
+        "id": "field_696",
+        "name": "gender",
+        "label": "Gender",
+        "required": false,
+        "readOnly": true,
+        "validateOnChange": true,
+        "helpMessage": "",
+        "binding": "gender",
+        "standaloneClassName": "java.lang.Boolean",
+        "code": "CheckBox",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.checkBox.definition.CheckBoxFieldDefinition"
       }
     ]
   });

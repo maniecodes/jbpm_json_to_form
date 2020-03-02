@@ -79,6 +79,7 @@ class _JbpmFormState extends State<JbpmForm> {
 
   List<Widget> jbpmToForm() {
     List<Widget> listWidget = List<Widget>();
+    print('I got inside JBPM');
     for (var i = 0; i < formGeneral['fields'].length; i++) {
       Map item = formGeneral['fields'][i];
 
@@ -145,8 +146,17 @@ class _JbpmFormState extends State<JbpmForm> {
       }
 
       if (item['code'] == 'CheckBox') {
+        bool formValue;
+        dynamic val;
+        val = formGeneral['fields'][i]['value'];
+        if (val != false) {
+          formValue = true;
+        } else {
+          formValue = false;
+        }
+
         if (item['value'] == null) {
-          formGeneral['fields'][i]['value'] = false;
+          formValue = false;
         }
         List<Widget> checkboxes = [];
         if (labelHidden(item)) {
@@ -159,7 +169,7 @@ class _JbpmFormState extends State<JbpmForm> {
             children: <Widget>[
               Expanded(child: Text(formGeneral['fields'][i]['label'])),
               Checkbox(
-                value: formGeneral['fields'][i]['value'],
+                value: formValue,
                 onChanged: (bool value) {
                   this.setState(
                     () {
