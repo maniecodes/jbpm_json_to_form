@@ -220,6 +220,44 @@ class _JbpmFormState extends State<JbpmForm> {
         }
       }
 
+      if (item['code'] == 'ListBox') {
+        Widget label = SizedBox.shrink();
+        if (labelHidden(item)) {
+          label = Text(
+            item['label'],
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+          );
+        }
+        listWidget.add(Container(
+          margin: EdgeInsets.only(top: 5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              label,
+              DropdownButton<String>(
+                hint: Text('Select option'),
+                value: formGeneral['fields'][i]['value'],
+                onChanged: (String newValue) {
+                  setState(() {
+                    formGeneral['fields'][i]['value'] = newValue;
+                    _handleChanged();
+                  });
+                },
+                items: item['options']
+                    .map<DropdownMenuItem<String>>((dynamic data) {
+                  return DropdownMenuItem<String>(
+                      value: data['value'],
+                      child: Text(
+                        data['text'],
+                        style: TextStyle(color: Colors.black),
+                      ));
+                }).toList(),
+              )
+            ],
+          ),
+        ));
+      }
+
       if (item['code'] == 'Document') {
         listWidget.add(Container(
           margin: EdgeInsets.only(top: 5.0),
