@@ -43,6 +43,8 @@ class _JbpmFormState extends State<JbpmForm> {
 
   final dynamic formGeneral;
 
+  int radioValue;
+
   String isRequired(item, value) {
     if (value.isEmpty) {
       return widget.errorMessages[item['name']] ?? 'Please enter some text';
@@ -146,17 +148,12 @@ class _JbpmFormState extends State<JbpmForm> {
       }
 
       if (item['code'] == 'CheckBox') {
-        bool formValue;
-        dynamic val;
-        val = formGeneral['fields'][i]['value'];
-        if (val != false) {
-          formValue = true;
-        } else {
-          formValue = false;
-        }
+        bool formValue = false;
 
-        if (item['value'] == null) {
-          formValue = false;
+        var val = formGeneral['fields'][i]['value'];
+
+        if (item['value'] != null && (val != false && val != 'false')) {
+          formValue = true;
         }
         List<Widget> checkboxes = [];
         if (labelHidden(item)) {
@@ -192,6 +189,35 @@ class _JbpmFormState extends State<JbpmForm> {
             ),
           ),
         );
+      }
+
+      if (item['code'] == 'RadioGroup') {
+        listWidget.add(Container(
+          margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+          child: Text(
+            item['label'],
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+          ),
+        ));
+
+        radioValue = item['value'];
+        for (var i = 0; i < item['options'].length; i++) {
+          listWidget.add(Row(
+            children: <Widget>[
+              Expanded(child: Text(item['options'][i]['text'])),
+              Radio<int>(
+                  value: int.parse(item['options'][i]['value']),
+                  groupValue: radioValue == null ? 1 : radioValue,
+                  onChanged: (int value) {
+                    this.setState(() {
+                      radioValue = value;
+                      item['value'] = value;
+                      _handleChanged();
+                    });
+                  }),
+            ],
+          ));
+        }
       }
 
       if (item['code'] == 'Document') {
@@ -296,7 +322,7 @@ class _JbpmFormState extends State<JbpmForm> {
 
   @override
   Widget build(BuildContext context) {
-    print(formGeneral);
+    // print(formGeneral);
     return Form(
       autovalidate: formGeneral['autoValidated'] ?? false,
       key: _formKey,

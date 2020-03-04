@@ -44,74 +44,38 @@ class _FieldsState extends State<Fields> {
             "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.definition.TextAreaFieldDefinition"
       },
       {
-        "id": "field_831172453834416E10",
-        "name": "caseFile_ordered",
-        "label": "CaseFile_ordered",
-        "required": false,
-        "readOnly": false,
-        "validateOnChange": true,
-        "binding": "caseFile_ordered",
-        "standaloneClassName": "java.lang.Boolean",
-        "code": "CheckBox",
-        "serializedFieldClassName":
-            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.checkBox.definition.CheckBoxFieldDefinition"
-      },
-      {
-        "id": "field_2897352400479343E12",
-        "name": "caseFile_hwSpec",
-        "label": "CaseFile_hwSpec",
-        "required": false,
-        "readOnly": false,
-        "validateOnChange": true,
-        "binding": "caseFile_hwSpec",
-        "standaloneClassName": "org.jbpm.document.Document",
-        "code": "Document",
-        "serializedFieldClassName":
-            "org.kie.workbench.common.forms.jbpm.model.authoring.document.definition.DocumentFieldDefinition"
-      },
-      {
-        "placeHolder": "Reason",
-        "rows": 4,
-        "id": "field_332058348325587E12",
-        "name": "reason",
-        "label": "Reason",
-        "required": false,
-        "readOnly": true,
-        "validateOnChange": true,
-        "binding": "reason",
-        "standaloneClassName": "java.lang.String",
-        "code": "TextArea",
-        "serializedFieldClassName":
-            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.definition.TextAreaFieldDefinition"
-      },
-      {
-        "placeHolder": "Performance",
-        "maxLength": 100,
-        "id": "field_336003622256354E12",
-        "name": "performance",
-        "label": "Performance",
+        "id": "field_206",
+        "name": "intern",
+        "label": "Intern",
         "required": true,
         "readOnly": false,
         "validateOnChange": true,
-        "binding": "performance",
-        "standaloneClassName": "java.lang.Integer",
-        "code": "IntegerBox",
-        "serializedFieldClassName":
-            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.integerBox.definition.IntegerBoxFieldDefinition"
-      },
-      {
-        "id": "field_696",
-        "name": "gender",
-        "label": "Gender",
-        "required": false,
-        "readOnly": true,
-        "validateOnChange": true,
         "helpMessage": "",
-        "binding": "gender",
+        "binding": "intern",
         "standaloneClassName": "java.lang.Boolean",
         "code": "CheckBox",
         "serializedFieldClassName":
             "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.checkBox.definition.CheckBoxFieldDefinition"
+      },
+      {
+        "options": [
+          {"value": "1", "text": "Male"},
+          {"value": "2", "text": "Female"}
+        ],
+        "inline": false,
+        "dataProvider": "",
+        "id": "field_1317",
+        "name": "gender",
+        "label": "Gender",
+        "required": true,
+        "readOnly": false,
+        "validateOnChange": true,
+        "helpMessage": "",
+        "binding": "gender",
+        "standaloneClassName": "java.lang.String",
+        "code": "RadioGroup",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.selectors.radioGroup.definition.StringRadioGroupFieldDefinition"
       }
     ]
   });
