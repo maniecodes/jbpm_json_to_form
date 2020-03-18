@@ -60,7 +60,7 @@ class _JbpmFormState extends State<JbpmForm> {
         "\\." +
         "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
         ")+";
-    RegExp regExp = new RegExp(p);
+    RegExp regExp = RegExp(p);
 
     if (regExp.hasMatch(value)) {
       return null;
@@ -181,8 +181,8 @@ class _JbpmFormState extends State<JbpmForm> {
         );
 
         listWidget.add(
-          new Container(
-            margin: new EdgeInsets.only(top: 5.0),
+          Container(
+            margin: EdgeInsets.only(top: 5.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: checkboxes,
@@ -258,7 +258,7 @@ class _JbpmFormState extends State<JbpmForm> {
         ));
       }
 
-      if (item['code'] == 'Document') {
+      if (item['code'] == 'DocumentCollection') {
         listWidget.add(Container(
           margin: EdgeInsets.only(top: 5.0),
           child: Column(
@@ -285,7 +285,7 @@ class _JbpmFormState extends State<JbpmForm> {
                   });
                   //  }
                 },
-                child: Text('Open file'),
+                child: Text('Upload Document'),
               ),
               Builder(
                 builder: (BuildContext context) => _loadingPath
@@ -293,18 +293,18 @@ class _JbpmFormState extends State<JbpmForm> {
                         padding: const EdgeInsets.only(bottom: 10.0),
                         child: const CircularProgressIndicator())
                     : _path != null || _paths != null
-                        ? new Container(
+                        ? Container(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             height: MediaQuery.of(context).size.height * 0.50,
-                            child: new Scrollbar(
-                                child: new ListView.separated(
+                            child: Scrollbar(
+                                child: ListView.separated(
                               itemCount: _paths != null && _paths.isNotEmpty
                                   ? _paths.length
                                   : 1,
                               itemBuilder: (BuildContext context, int index) {
                                 final bool isMultiPath =
                                     _paths != null && _paths.isNotEmpty;
-                                final String name = 'File $index: ' +
+                                final String name = 'File ${index + 1}: ' +
                                     (isMultiPath
                                         ? _paths.keys.toList()[index]
                                         : _fileName ?? '...');
@@ -312,19 +312,35 @@ class _JbpmFormState extends State<JbpmForm> {
                                     ? _paths.values.toList()[index].toString()
                                     : _path;
 
-                                return new ListTile(
-                                  title: new Text(
-                                    name,
+                                return (Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      ListTile(
+                                        title: Text(
+                                          name,
+                                        ),
+                                        subtitle: Text(path),
+                                      ),
+                                      Container(
+                                        width: 100.0,
+                                        height: 200.0,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(path),
+                                              fit: BoxFit.contain),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  subtitle: new Text(path),
-                                );
+                                ));
                               },
                               separatorBuilder:
                                   (BuildContext context, int index) =>
-                                      new Divider(),
+                                      Divider(),
                             )),
                           )
-                        : new Container(),
+                        : Container(),
               ),
             ],
           ),

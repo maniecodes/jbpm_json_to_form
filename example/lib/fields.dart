@@ -44,6 +44,21 @@ class _FieldsState extends State<Fields> {
             "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.definition.TextAreaFieldDefinition"
       },
       {
+        "maxDocuments": 0,
+        "id": "field_1361",
+        "name": "uploadfiles",
+        "label": "Upload Files",
+        "required": false,
+        "readOnly": false,
+        "validateOnChange": true,
+        "helpMessage": "",
+        "binding": "uploadfiles",
+        "standaloneClassName": "org.jbpm.document.DocumentCollection",
+        "code": "DocumentCollection",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.jbpm.model.authoring.documents.definition.DocumentCollectionFieldDefinition"
+      },
+      {
         "id": "field_206",
         "name": "intern",
         "label": "Intern",
