@@ -14,6 +14,7 @@ class JbpmForm extends StatefulWidget {
   final Widget buttonSave;
   final Map decorations;
   final Function actionSave;
+  final Function downloadFile;
   final ValueChanged<dynamic> onChanged;
 
   const JbpmForm({
@@ -24,6 +25,7 @@ class JbpmForm extends StatefulWidget {
     this.errorMessages = const {},
     this.decorations = const {},
     this.buttonSave,
+    this.downloadFile,
     this.actionSave,
   });
 
@@ -82,6 +84,7 @@ class _JbpmFormState extends State<JbpmForm> {
   List<Widget> jbpmToForm() {
     List<Widget> listWidget = List<Widget>();
     print('I got inside JBPM');
+    print(formGeneral['fields']);
     for (var i = 0; i < formGeneral['fields'].length; i++) {
       Map item = formGeneral['fields'][i];
 
@@ -258,7 +261,37 @@ class _JbpmFormState extends State<JbpmForm> {
         ));
       }
 
-      if (item['code'] == 'DocumentCollection') {
+      if (item['code'] == 'Document' && item['readOnly'] == true) {
+        listWidget.add(Container(
+          margin: EdgeInsets.only(top: 5.0),
+          child: Column(
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  var text = item['value'];
+                  var newString = text.substring(text.length - 36);
+                  widget.downloadFile(newString);
+                },
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Text('  Click to Download Attachment'),
+                    ),
+                    Icon(
+                      Icons.attach_file,
+                      color: Colors.blue,
+                      size: 24.0,
+                      semanticLabel: 'Text to announce in accessibility modes',
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+      }
+
+      if (item['code'] == 'Document' && item['readOnly'] == false) {
         listWidget.add(Container(
           margin: EdgeInsets.only(top: 5.0),
           child: Column(
@@ -321,16 +354,16 @@ class _JbpmFormState extends State<JbpmForm> {
                                         ),
                                         subtitle: Text(path),
                                       ),
-                                      Container(
-                                        width: 100.0,
-                                        height: 200.0,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(path),
-                                              fit: BoxFit.contain),
-                                        ),
-                                      )
+                                      // Container(
+                                      //   width: 100.0,
+                                      //   height: 200.0,
+                                      //   alignment: Alignment.center,
+                                      //   decoration: BoxDecoration(
+                                      //     image: DecorationImage(
+                                      //         image: AssetImage(path),
+                                      //         fit: BoxFit.contain),
+                                      //   ),
+                                      // )
                                     ],
                                   ),
                                 ));
@@ -376,7 +409,7 @@ class _JbpmFormState extends State<JbpmForm> {
 
   @override
   Widget build(BuildContext context) {
-    // print(formGeneral);
+     print(formGeneral);
     return Form(
       autovalidate: formGeneral['autoValidated'] ?? false,
       key: _formKey,
