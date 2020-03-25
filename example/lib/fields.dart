@@ -91,6 +91,40 @@ class _FieldsState extends State<Fields> {
         "code": "RadioGroup",
         "serializedFieldClassName":
             "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.selectors.radioGroup.definition.StringRadioGroupFieldDefinition"
+      },
+      {
+        "id": "field_2355",
+        "name": "document",
+        "label": "Document",
+        "required": false,
+        "readOnly": false,
+        "validateOnChange": true,
+        "helpMessage": "",
+        "binding": "document",
+        "standaloneClassName": "org.jbpm.document.Document",
+        "code": "Document",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.jbpm.model.authoring.document.definition.DocumentFieldDefinition"
+      },
+      {
+        "options": [
+          {"value": "1", "text": "Lagos"},
+          {"value": "2", "text": "Abuja"}
+        ],
+        "addEmptyOption": true,
+        "dataProvider": "",
+        "id": "field_248",
+        "name": "states",
+        "label": "States",
+        "required": false,
+        "readOnly": false,
+        "validateOnChange": true,
+        "helpMessage": "",
+        "binding": "states",
+        "standaloneClassName": "java.lang.String",
+        "code": "ListBox",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.selectors.listBox.definition.StringListBoxFieldDefinition"
       }
     ]
   });

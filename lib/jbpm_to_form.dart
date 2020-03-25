@@ -84,7 +84,6 @@ class _JbpmFormState extends State<JbpmForm> {
   List<Widget> jbpmToForm() {
     List<Widget> listWidget = List<Widget>();
     print('I got inside JBPM');
-    print(formGeneral['fields']);
     for (var i = 0; i < formGeneral['fields'].length; i++) {
       Map item = formGeneral['fields'][i];
 
@@ -409,7 +408,7 @@ class _JbpmFormState extends State<JbpmForm> {
 
   @override
   Widget build(BuildContext context) {
-     print(formGeneral);
+    //  print(formGeneral);
     return Form(
       autovalidate: formGeneral['autoValidated'] ?? false,
       key: _formKey,
