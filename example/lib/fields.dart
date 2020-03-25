@@ -74,15 +74,15 @@ class _FieldsState extends State<Fields> {
       },
       {
         "options": [
-          {"value": "1", "text": "Male"},
-          {"value": "2", "text": "Female"}
+          {"value": "Male", "text": "Male"},
+          {"value": "Female", "text": "Female"}
         ],
         "inline": false,
         "dataProvider": "",
-        "id": "field_1317",
+        "id": "field_24332",
         "name": "gender",
         "label": "Gender",
-        "required": true,
+        "required": false,
         "readOnly": false,
         "validateOnChange": true,
         "helpMessage": "",
@@ -108,8 +108,8 @@ class _FieldsState extends State<Fields> {
       },
       {
         "options": [
-          {"value": "1", "text": "Lagos"},
-          {"value": "2", "text": "Abuja"}
+          {"value": "Lagos", "text": "Lagos"},
+          {"value": "Abuja", "text": "Abuja"}
         ],
         "addEmptyOption": true,
         "dataProvider": "",
