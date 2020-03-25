@@ -116,7 +116,7 @@ class _FieldsState extends State<Fields> {
         "id": "field_248",
         "name": "states",
         "label": "States",
-        "required": false,
+        "required": true,
         "readOnly": false,
         "validateOnChange": true,
         "helpMessage": "",
