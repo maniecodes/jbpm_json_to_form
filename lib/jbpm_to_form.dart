@@ -45,7 +45,7 @@ class _JbpmFormState extends State<JbpmForm> {
 
   final dynamic formGeneral;
 
-  int radioValue;
+  String radioValue;
 
   String isRequired(item, value) {
     if (value.isEmpty) {
@@ -207,10 +207,10 @@ class _JbpmFormState extends State<JbpmForm> {
           listWidget.add(Row(
             children: <Widget>[
               Expanded(child: Text(item['options'][i]['text'])),
-              Radio<int>(
-                  value: int.parse(item['options'][i]['value']),
-                  groupValue: radioValue == null ? 1 : radioValue,
-                  onChanged: (int value) {
+              Radio<String>(
+                  value: item['options'][i]['value'],
+                  groupValue: radioValue == null ? radioValue : radioValue,
+                  onChanged: (String value) {
                     this.setState(() {
                       radioValue = value;
                       item['value'] = value;
