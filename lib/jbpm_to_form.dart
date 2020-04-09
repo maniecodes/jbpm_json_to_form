@@ -96,13 +96,13 @@ class _JbpmFormState extends State<JbpmForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  child: Text(
-                    item['label'],
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                  ),
-                ),
+                // Container(
+                //   child: Text(
+                //     item['label'],
+                //     style:
+                //         TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                //   ),
+                // ),
                 TextFormField(
                   onSaved: (val) {
                     var d = '';
@@ -114,14 +114,13 @@ class _JbpmFormState extends State<JbpmForm> {
                       ? TextInputType.number
                       : TextInputType.text,
                   initialValue: formGeneral['fields'][i]['value'] ?? null,
-                  decoration: item['decoration'] ??
-                      widget.decorations[item['code']] ??
-                      InputDecoration(
-                        hintText: item['placeholder'] ?? "",
-                        helperText: item['helpText'] ?? "",
-                      ),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: item['label'],
+                    hintText: item['placeHolder'],
+                  ),
                   maxLength: item['maxLength'] ?? null,
-                  maxLines: item['code'] == 'TextArea' ? 10 : 1,
+                  maxLines: item['code'] == 'TextArea' ? 3 : 1,
                   onChanged: (String value) {
                     formGeneral['fields'][i]['value'] = value;
                     _handleChanged();
@@ -209,7 +208,9 @@ class _JbpmFormState extends State<JbpmForm> {
               Expanded(child: Text(item['options'][i]['text'])),
               Radio<String>(
                   value: item['options'][i]['value'],
-                  groupValue: radioValue == null ? radioValue : radioValue,
+                  // this should be groupValue: radioValue,
+                  groupValue: radioValue,
+                  // groupValue: radioValue == null ? radioValue : radioValue,
                   onChanged: (String value) {
                     this.setState(() {
                       radioValue = value;
@@ -327,7 +328,7 @@ class _JbpmFormState extends State<JbpmForm> {
                     : _path != null || _paths != null
                         ? Container(
                             padding: const EdgeInsets.only(bottom: 30.0),
-                            height: MediaQuery.of(context).size.height * 0.50,
+                            height: MediaQuery.of(context).size.height * 0.25,
                             child: Scrollbar(
                                 child: ListView.separated(
                               itemCount: _paths != null && _paths.isNotEmpty
