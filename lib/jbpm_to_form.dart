@@ -1,10 +1,14 @@
 library jbpm_json_to_form;
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class JbpmForm extends StatefulWidget {
   final String form;
@@ -43,13 +47,58 @@ class _JbpmFormState extends State<JbpmForm> {
   bool _hasValidMime = false;
   FileType _pickingType;
 
+  final RoundedLoadingButtonController _btnController =
+      new RoundedLoadingButtonController();
+
+  // Map
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
+  Position _currentPosition;
+  String _currentAddress;
+
+  @override
+  void initState() {
+    super.initState();
+
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+        print('position: $position');
+      });
+
+      _getAddressFromLatLng();
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  _getAddressFromLatLng() async {
+    try {
+      final coordinates = new Coordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+
+      setState(() {
+        _currentAddress = "${first.addressLine} ";
+        print('my current location is $_currentAddress');
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   final dynamic formGeneral;
 
   String radioValue;
 
   String isRequired(item, value) {
     if (value.isEmpty) {
-      return widget.errorMessages[item['name']] ?? 'Please enter some text';
+      return widget.errorMessages[item['name']] ??
+          '${item['name']} cannot be empty';
     }
     return null;
   }
@@ -90,62 +139,111 @@ class _JbpmFormState extends State<JbpmForm> {
       if (item['code'] == 'TextBox' ||
           item['code'] == 'TextArea' ||
           item['code'] == 'IntegerBox') {
-        listWidget.add(
-          Container(
-            margin: EdgeInsets.only(top: 5.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // Container(
-                //   child: Text(
-                //     item['label'],
-                //     style:
-                //         TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                //   ),
-                // ),
-                TextFormField(
-                  onSaved: (val) {
-                    var d = '';
-                    setState(() => d = val);
-                    print(d);
-                  },
-                  controller: null,
-                  keyboardType: item['code'] == 'IntegerBox'
-                      ? TextInputType.number
-                      : TextInputType.text,
-                  initialValue: formGeneral['fields'][i]['value'] ?? null,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: item['label'],
-                    hintText: item['placeHolder'],
-                  ),
-                  maxLength: item['maxLength'] ?? null,
-                  maxLines: item['code'] == 'TextArea' ? 3 : 1,
-                  onChanged: (String value) {
-                    formGeneral['fields'][i]['value'] = value;
-                    _handleChanged();
-                  },
-                  readOnly: item['readOnly'] ?? false,
-                  obscureText: item['code'] == 'Password' ? true : false,
-                  validator: (value) {
-                    if (item['code'] == 'Email') {
-                      return validateEmail(item, value);
-                    }
-
-                    if (item.containsKey('required')) {
-                      if (item['required'] == true ||
-                          item['required'] == 'True' ||
-                          item['required'] == 'true') {
-                        return isRequired(item, value);
+        String itemName = "${item['name']}";
+        if (itemName != 'address') {
+          listWidget.add(
+            Container(
+              margin: EdgeInsets.only(top: 5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TextFormField(
+                    onSaved: (val) {
+                      var d = '';
+                      setState(() => d = val);
+                      print(d);
+                    },
+                    controller: null,
+                    keyboardType: item['code'] == 'IntegerBox'
+                        ? TextInputType.number
+                        : TextInputType.text,
+                    initialValue: formGeneral['fields'][i]['value'] ?? null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: item['label'],
+                      hintText: item['placeHolder'],
+                    ),
+                    maxLength: item['maxLength'] ?? null,
+                    maxLines: item['code'] == 'TextArea' ? 3 : 1,
+                    onChanged: (String value) {
+                      formGeneral['fields'][i]['value'] = value;
+                      _handleChanged();
+                    },
+                    readOnly: item['readOnly'] ?? false,
+                    obscureText: item['code'] == 'Password' ? true : false,
+                    validator: (value) {
+                      if (item['code'] == 'Email') {
+                        return validateEmail(item, value);
                       }
-                    }
-                    return null;
-                  },
-                ),
-              ],
+
+                      if (item.containsKey('required')) {
+                        if (item['required'] == true ||
+                            item['required'] == 'True' ||
+                            item['required'] == 'true') {
+                          return isRequired(item, value);
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          // Get device current location and display in a text field
+          listWidget.add(
+            Container(
+              margin: EdgeInsets.only(top: 5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  if (_currentAddress != null)
+                    TextFormField(
+                      onSaved: (val) {
+                        var d = '';
+                        setState(() => d = val);
+                        print(d);
+                      },
+                      controller: null,
+                      keyboardType: item['code'] == 'IntegerBox'
+                          ? TextInputType.number
+                          : TextInputType.text,
+                      initialValue: formGeneral['fields'][i]['value'] =
+                          _currentAddress ?? null,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: item['label'],
+                        hintText: item['placeHolder'],
+                      ),
+                      maxLength: item['maxLength'] ?? null,
+                      maxLines: item['code'] == 'TextArea' ? 2 : 1,
+                      onChanged: (String value) {
+                        formGeneral['fields'][i]['value'] = value;
+                        _handleChanged();
+                      },
+                      readOnly: item['readOnly'] ?? false,
+                      obscureText: item['code'] == 'Password' ? true : false,
+                      validator: (value) {
+                        if (item['code'] == 'Email') {
+                          return validateEmail(item, value);
+                        }
+
+                        if (item.containsKey('required')) {
+                          if (item['required'] == true ||
+                              item['required'] == 'True' ||
+                              item['required'] == 'true') {
+                            return isRequired(item, value);
+                          }
+                        }
+                        return null;
+                      },
+                    ),
+                ],
+              ),
+            ),
+          );
+        }
       }
 
       if (item['code'] == 'CheckBox') {
@@ -354,16 +452,6 @@ class _JbpmFormState extends State<JbpmForm> {
                                         ),
                                         subtitle: Text(path),
                                       ),
-                                      // Container(
-                                      //   width: 100.0,
-                                      //   height: 200.0,
-                                      //   alignment: Alignment.center,
-                                      //   decoration: BoxDecoration(
-                                      //     image: DecorationImage(
-                                      //         image: AssetImage(path),
-                                      //         fit: BoxFit.contain),
-                                      //   ),
-                                      // )
                                     ],
                                   ),
                                 ));
@@ -385,14 +473,26 @@ class _JbpmFormState extends State<JbpmForm> {
       listWidget.add(
         Container(
           margin: EdgeInsets.only(top: 10.0),
-          child: InkWell(
-            onTap: () {
-              if (_formKey.currentState.validate()) {
-                widget.actionSave(formGeneral);
-              }
-            },
-            child: widget.buttonSave,
-          ),
+          child: RoundedLoadingButton(
+              color: Colors.green,
+              child: widget.buttonSave,
+              controller: _btnController,
+              onPressed: () {
+                _btnController.start();
+                if (_formKey.currentState.validate()) {
+                  Timer(Duration(seconds: 1), () {
+                    widget.actionSave(formGeneral);
+                  });
+                }
+
+                if (!_formKey.currentState.validate()) {
+                  _btnController.stop();
+                }
+
+                Timer(Duration(seconds: 6), () {
+                  _btnController.stop();
+                });
+              }),
         ),
       );
     }
