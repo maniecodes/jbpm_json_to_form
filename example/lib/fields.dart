@@ -44,6 +44,21 @@ class _FieldsState extends State<Fields> {
             "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textBox.definition.TextBoxFieldDefinition"
       },
       {
+        "maxLength": 200,
+        "placeHolder": "Address",
+        "id": "field_74017774634817E11",
+        "name": "address",
+        "label": "Address",
+        "required": true,
+        "readOnly": true,
+        "validateOnChange": true,
+        "binding": "employee",
+        "standaloneClassName": "java.lang.String",
+        "code": "TextArea",
+        "serializedFieldClassName":
+            "org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textBox.definition.TextBoxFieldDefinition"
+      },
+      {
         "placeHolder": "Reason",
         "rows": 4,
         "id": "field_282038126127015E11",

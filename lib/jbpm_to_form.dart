@@ -140,7 +140,58 @@ class _JbpmFormState extends State<JbpmForm> {
           item['code'] == 'TextArea' ||
           item['code'] == 'IntegerBox') {
         String itemName = "${item['name']}";
+
         if (itemName != 'address') {
+          listWidget.add(
+            Container(
+              margin: EdgeInsets.only(top: 5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TextFormField(
+                    onSaved: (val) {
+                      var d = '';
+                      setState(() => d = val);
+                      print(d);
+                    },
+                    controller: null,
+                    keyboardType: item['code'] == 'IntegerBox'
+                        ? TextInputType.number
+                        : TextInputType.text,
+                    initialValue: formGeneral['fields'][i]['value'] ?? null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: item['label'],
+                      hintText: item['placeHolder'],
+                    ),
+                    maxLength: item['maxLength'] ?? null,
+                    maxLines: item['code'] == 'TextArea' ? 3 : 1,
+                    onChanged: (String value) {
+                      formGeneral['fields'][i]['value'] = value;
+                      _handleChanged();
+                    },
+                    readOnly: item['readOnly'] ?? false,
+                    obscureText: item['code'] == 'Password' ? true : false,
+                    validator: (value) {
+                      if (item['code'] == 'Email') {
+                        return validateEmail(item, value);
+                      }
+
+                      if (item.containsKey('required')) {
+                        if (item['required'] == true ||
+                            item['required'] == 'True' ||
+                            item['required'] == 'true') {
+                          return isRequired(item, value);
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else if (itemName == 'address' && item['readOnly']) {
           listWidget.add(
             Container(
               margin: EdgeInsets.only(top: 5.0),
